@@ -1,0 +1,30 @@
+Alias-Mechanismus
+=================
+
+=> einfacher Suchen-und-Ersetzten-Mechanismus
+	Syntax: Alias Aliasbezeichnung Pfad
+	
+	Bsp: Alias /icons/ /user/local/apache2/share/icons/
+			<img src="/icons/bild.jpeg">
+					/user/local/apache2/share/icons/bild.jpeg
+					
+		Alias icons user/local/apache/share/vhost/xy.bock.wurst/bilder
+			<a href="/docs/emoticons.html">...</a>
+					/docs/emotuser/local/apache2/share/vhost/xy.bock.wurst/bilder.html
+					
+		
+	Aliasbezeichnung sollte wohlüberlegt gewählt werden, 
+	da es bei bestehenden Dateien/Verzeichnise zu Problemen kommen kann.
+		z.B. /_Bezeichnung_/  oder /-Bezeichnung-/  oder /00-Bezeichnung/
+		
+		
+	Sollte der Pfad außerhalb von DocumentRoot liegen, MUSS
+	ein Eintrag in Directory gemacht werden. Der Zugriff muss erlaubt werden.
+	
+	|-Verzeichnis: <Directory ...>
+	|					...
+	|				</Directory>
+	|
+	|-Datei:	<Files ...>
+					...
+				</Files>

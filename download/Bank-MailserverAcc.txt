@@ -1,0 +1,31 @@
+Bank-Mailserver Account anlegen:
+
+Name 	rN-4BytederIP
+UID		3NMM			Gruppenname:mN
+GID		3N00
+HOME-Verzeichnis	/home/users/
+
+Name 	r1-4BytederIP
+UID		3102			Gruppenname:m1
+GID		3100
+HOME-Verzeichnis	/home/users/
+
+#gruppe erstellen für Bankreihe 1
+groupadd -g 3100 m1
+
+#user in Bankreihe 1 erstellen 
+useradd -u 3102 -g 3100 -d /home/users/r1-2 -m -s /bin/bash r1-2
+
+#/etc/tpop3d.conf änderung
+Listen-address: 10.212.51.0:110(reihe1.fi212.netz)
+
+Laptop (local user)
+telnet lokSMTP 25
+Empfänger:	IHRAccount_amBMS@reiheN.fi212.netz		-->r1-2@reihe1.fi212.netz
+	journalctl -fu postfix
+	
+Bank-Mail-Server:
+	/var/spool/mail/r1-2
+	journalctl -fu postfix
+
+

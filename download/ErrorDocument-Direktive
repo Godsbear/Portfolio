@@ -1,0 +1,50 @@
+ErrorDocument-Direktive
+=======================
+
+	RFC 7231, kapitel 6:	HTTP-Statuscode
+	3-stellige Stauscodes:	
+		-1xx	Info
+		-2xx Info
+		-3xx redirected
+		-4xx Fehler -> WebClient
+		-5xx Fehler -> Server
+		
+	400		bad request	(schlechte Anfrage)
+	401		unauthorized (Fehler bei Authentifizierung)
+	402		payment requied (nur gegen Bezahlung)
+	403		Forbidden (Zugriff verweigert)
+	404		file not found (Seite nicht gefunden)
+	405		method not allowed(Methode nicht erlaubt
+	408		request timeout (Zeitüberschreitung bei Anfrage)
+	414		URI too long (URI ist zu lang)
+	415		unsupportet media type (nicht unterstützter Medien-Typ)
+	
+	500 	internal server error (interner Serverfehler, falsche config)
+	501		not implemented (nicht implementiert)
+	503		service not available (HTTP-Dienst nicht verfügbar,
+									da keine weitere Verbindung möglich ist)
+	
+	
+	
+	Änderungen in der .conf
+	1. Alias für Verzeichnis/Datei erstellen
+		Alias /fehler/ /usr/local/apache2/share/vhosts/arx2.ctc.lan/fehler/
+	
+	2. Directory für Verzeichnis/Datei erstellen
+		<Directory "/usr/local/apache2/share/vhosts/arx2.ctc.lan/fehler/">
+			Options none
+			AllowOverride none
+			Require all granted
+		</Directory>
+	
+	3. Dateien mit ->"ErrorDocument" <fehlercode> <Alias+Dateiname> <- hinzufügen
+		# Some examples:
+		ErrorDocument 500 /fehler/internalServerError.html
+		ErrorDocument 404 /fehler/missing.html
+		ErrorDocument 401 /fehler/unauth.html
+		ErrorDocument 408 /fehler/timeOut.html
+		ErrorDocument 403 /fehler/forbidden.html
+		
+		
+		
+		

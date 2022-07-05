@@ -1,0 +1,96 @@
+Require-Direktive
+=================
+	Require all	granted		--> allen Zugriff erlaubt
+				denied		--> allen Zugriff verboten
+				
+	Require ip ...			--> Einschränkung des Zugriffs
+								hinsichtlich IPs
+								
+				Bsp:	Require ip 10.9.99.99 	
+						--> Zugriff nur für	10.9.99.99
+					
+						Require ip 10.9.99.99 10.2.3.4
+								--> Zugriff nur für Ips 
+									10.9.99.99 oder 10.2.3.4
+									
+						Require ip 10.5.0.0/16
+						
+								--> Zugriff für IP-Bereich 10.5.0.0/16	
+								
+							oder ip 10.5
+								--> Zugriff für IP-Bereich 10.5.0.0/16
+								
+							oder ip 10.5.0.0/255.255.0.0
+								--> Zugriff für IP-Bereich 10.5.0.0/16
+								
+								
+						Require ip host1.dom.tld
+								--> Zugriff nur für Host: host1.dom.tld
+									nur wenn Namensauflösung funktioniert
+									
+						Require ip .dom.tld
+								--> Zugriff für alle Host aus Domain .dom.tld
+									nur wenn Namensauflösung funktioniert
+								
+								
+	<RequireAll>		--> log. UND
+	<RequireAny>		--> log. ODER
+	<RequireNone>		--> log. NOT
+	
+	Require not...	--> Verneinung
+	
+		Bsp: <RequireAll>
+				Require	ip 10.10.10.0/24
+				Require not ip 10.10.10.10
+			 </RequireAll>
+			 
+			 <RequireAll>
+			 	Require ip 10.10.10.0/24
+			 	<RequireNone>
+			 		Require ip 10.10.10.10
+			 	</RequireNone>
+			 </RequireAll>
+	
+			 
+			 
+			 
+	Require-Direktive
+	-----------------
+	
+	Require user		--> Zugriff auf Benutzer beschränken
+								!!Authentifizierung
+								
+		Bsp: 	Require user tick trick track
+					Zugriff nur den angegebenen Benutzern erlauben
+				
+	Require group		--> Zugriff auf Gruppen beschränken
+								!!Authentifizierung
+		
+		Bsp: 	Require group enten
+					Zugriff nur der angegebenen Gruppe erlauben
+					
+					
+		Bsp:	enten -> tick, trick, trak,donald
+				fuechse -> fix foxy
+				
+				Zugriff erlauben für Gruppe enten (außer Donald)
+				wenn von IP-Bereich 10.9.0.0/24
+				
+				oder foxy, wenn IP 10.9.9.9 oder IP 10.9.99.99
+				aber nicht von IP 10.9.8.8
+				
+		-->		<RequireAny>
+					<RequireAll>
+						Require group enten
+						Require ip 10.9.0.0/24
+						Require not user donald
+					</RequireAll>
+					<RequireAll>
+						Require user foxy
+						Require ip 10.9.9.9 10.9.99.99
+					</RequireAll>
+				</RequireAny>
+	
+	
+	
+	

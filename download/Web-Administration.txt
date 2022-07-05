@@ -1,0 +1,31 @@
+#185 Web-Administration
+======================
+-FTP (file transfer protocol)
+-Provider-Installation
+	-->HTTP-Server 	+ 	FTP-Server
+		WebClient		Upload von Html-Seiten
+
+--------------------------------
+-Mail
+	SMTP (simple mail transfer protocol)
+	POP3 (postoffice protocol)
+		mehrstufiger Mail-Server-Aufbau
+		SSH (serure shell)
+		
+-------------------------------
+DNS
+	RR		-->recource record
+	
+	forward lookup  	-->FQDN-->IP
+		A,AAAA,CNAME,MX(mail exchainge),...
+		
+	reverse lookup		-->IP-->FQDN
+		PTR
+	
+	SOA	(start of authority)
+	NS	(name server)
+	
+	
+	
+	
+	

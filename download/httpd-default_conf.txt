@@ -1,0 +1,55 @@
+httpd-default.conf
+==================
+
+	Standard-Einstellungen
+	
+	Timeout <sekunden>		--> Wartezeit für Bearbeitungsdauer
+	
+	KeepAlive	_on_|off		--> Hält Verbindung aufrecht bei Request für weitere Requests
+									-> erhöht die Geschwindigkeit
+					
+	KeepAliveTimeout <sekunden>	--> 	Wartezeit bei "KeepAlive on" auf weitere Anfragen
+	
+	MaxKeepAliveRequest <anzahl>	--> Maximale Anzahl an Anfragen über eine Verbindung
+	
+	UseCanonicalName on|_off_	-->  wie der Server sich selbst adressiert (->Scripte)
+										off -> Servername, den der Client benutzt
+										on	-> Servername, der in Apachekonfiguration gesetzt ist
+										
+	AccessFileName	<dateiname>	--> Dateinamen der externen Datei,
+									mit der Überschreiben von Aufgaben
+									innerhalbeiner Directory-Direktive ermöglicht werden können
+									!!! Datei darf NIEMALS ausgeliefert werden!!!
+										-->httpd.conf	<Files ".ht*">
+															Require all denied
+														</Files>
+									Bei verwendung eines anderen Dateinamens
+									unbedingt eine Files-Direktive mit "Require all denied" hinzufügen
+									
+	ServerTokens _Full_|OS|Minimal|Minor|Major|Prod		--> setzten der auszugebenden Infos 
+															bei Server generierten Seiten
+															(am Seitenende)
+															zB. Error-Seiten oder Browserlisten
+									prod	-->Apache
+									major	-->Apache/2
+									minor	-->Apache/2.4
+									minimal	-->Apache/2.4.39
+									OS		-->Apache/2.4.39 Linux ...
+									Full	-->Apache/2.4.39 Linux ... + diverse Module
+									
+	ServerSignature _Off_|on|email	--> Einstellung, ob ServerTokens ausgegeben werden sollen
+										on -> ausgeben
+										of -> nicht ausgeben
+										email -> ServerAdminAdresse als Link dargestellt
+					
+	HostnameLookups on|_of_		-->	Namensauflösung für Clients
+									on -> IP in FQDN auflösen
+									off-> IP verwenden
+									
+	RequestReadTimeout			--> Timeout-Angaben für TLS- bzw SSL-Verbindungen
+							
+									
+									
+									
+									
+									

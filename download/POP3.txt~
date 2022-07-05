@@ -1,0 +1,15 @@
+POP3
+=====
+
+Serverport: 110
+	CTC-Archlinux: tpop3d
+		Konfigurationsdatei: /etc/tpop3d.conf
+		
+	Testen mit telnet auf Port 110:
+		telnet 10.212.51.2 110
+		USER	gorgel
+		PASS	Password im Klartext
+		LIST	--> laufende Nummer + Größe der MAIL
+		RETR	NR	-->zeigt die Mail an
+		DELE    NR	-->löscht Mail
+		QUIT

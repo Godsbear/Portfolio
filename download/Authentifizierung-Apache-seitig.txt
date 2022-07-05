@@ -1,0 +1,85 @@
+Authentifizierung- Apache-seitig
+================================
+
+Variante 1: Benutzer/Gruppen, die nur Apache bekannt ist
+
+Variante 2: Benutzer/Gruppen, die dem Betriebssystem bekannt sind
+				-->benötigt LDAP-Server
+					nur ein Password benötigt, von LDAP-Server übernommen
+					
+					
+Speicherung der Benutzer/Gruppen-Daten
+	zur Variante 1: 	-in Textdateien (Password-Datei und Gruppen-Datei) (bis ca 100 User empfohlen)
+					-in Dateien mit Datenbank-Format	(ab ca 100 User empfohlen)
+						-->dbm oder dbd
+						
+		
+Direktiven
+----------
+
+	AuthType 		wie Authentifizierung erfolgt
+					-basic		-->Standart, verschlüsselt
+					-digest		-->verschlüsselt
+	
+	AuthName		Authentifizierungsname des Bereichs
+	
+	AuthBasicProvider/		art der Speicherung der Benutzer/Gruppen-Daten
+	AuthDigestProvider			-file		-> Textdateien
+								-dbm/ dbd	-> Db-Format
+								-ldap		-> LDAP-Server
+								
+								
+	AuthUserFile	Speicherort der Benutzerdateiy		--------------------
+						--> ! sollte außerhalb des DocumentRoots liegen		|
+																			| Apache-user/
+					-Require user User-bezogen								| Apache-group
+									valid-user	--> alle Accounts			|-benötigen
+																			| lesenden Zugriff
+	AuthGroupfile	Speicherort der Gruppendatei							|
+						--> ! sollte außerhalb DocumentRoot liegen			| falls Apache NICHT
+																			| zugreifen kann,
+					-Require group  Gruppen-bezogen		--------------------  kommt es zum Fehler 500
+						
+	
+					
+Kommandos zum anlegen von Password-Dateien
+==========================================
+
+htpasswd	--> AuthType basic
+
+htdigest	--> AuthType digest
+
+htdbm		--> dbm-Format
+
+
+User anlegen mit:
+	/usr/local/apache2/bin/htpasswd -c -B .htpasswd.basic <username>
+	
+	httpd-vohost.conf
+	#Authentifizierung
+		AuthType basic
+		AuthName "very importent person"
+		AuthBasicProvider file
+		AuthUserfile "/srv/apache/share/vhosts/nur.regen.bogen/etc/.htpasswd.basic"
+		Require user tim struppi
+			
+	tim= moinmoin
+	struppi= moinmoin
+	fix= moinmoin
+	foxi= moinmoin
+
+Gruppe anlegen:
+	uthUserfile "/srv/apache/share/vhosts/nur.regen.bogen/etc/.htpasswd.basic"
+		Require user tim struppi
+		
+	Datei erstllen mit editor in:
+	/srv/apache/share/vhosts/nur.regen.bogen/etc/.htgroup
+	!! trennung mit Leerstelle
+	!! keine unnötigen Leerstellen
+	fuechse:fix foxi
+	detektive:tim struppi
+						
+	
+	
+	
+	

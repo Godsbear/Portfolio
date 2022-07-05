@@ -1,0 +1,38 @@
+Wildcards, Joker, Asterisk, Globbing
+=====================
+
+* 	--> beliebige  Anzahl beliebiger Zeichen
+		Anzahl: keine oder beliebig viele
+		Bsp: "text*" 	--> alles beginnend mit "text" egal was danach
+						folgt
+						"text", "textabc", "text123", "text...
+			"*text"	--> alles endend mit "text" egal was davor
+					"text", "abctext", "23text"
+			"*text*"	--> alles was "text" enthält, egal was davor oder daanch steht
+					"text","textabc", "text123", "abctext", "23text", "23text234", "abtextcf"
+			
+?	--> EIN beliebiges Zeichen
+		Bsp: "text?"	--> nach "text" MUSS ein Zeichen folgen
+						alles was mit "text" anfängt und 5 Zeichen lang ist
+
+			"???"	alles was aus 3 Zeichen besteht
+
+[  ]	--> 	EIN Zeichen aus der List zwischen den eckigen Klammern
+		Zeichen zw. den eckigen Klammern werden verODERT
+		Liste: [aSdFg14], [a-z], [A-Z], [a-zA-Z], [0-9]
+		
+		
+			
+kombinierbar:
+	"??text*123??"	--> besteht aus min. 11 Zeichen
+
+	
+	
+Methazeichen
+=========
+	
+	#	--> einzeiliger Kommentar
+	\	--> maskiert folgendes Zeichen
+	
+
+

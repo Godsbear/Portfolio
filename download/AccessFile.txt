@@ -1,0 +1,67 @@
+AccessFile(.htaccess)
+=====================
+
+AccessFilename 	Dateiname
+	Direktive einsetzbar:
+		-generell (httpd.conf)		httpd.conf: AccessFilename .htaccess	--> <Files ".ht*"> Require all denied </Files>
+		-vhosts						<VirtualHost...AccessFilename .vhostaccess	--><Files ".vhost*"> Require all denied </Files>
+		-Verzeichnisse				<Directory...AccessFilename .diraccess	--> <Files ".dir*"> Require all denied </Files>
+	
+	Wichtig!! AccessFile darf NIEMALS öffentlich einsehbar sein
+		
+	bei unterschiedlichen Dateinamen,
+	den Dateinamen bei allen mit der gleichen Zeichenfolge beginnen	(z.B. .ht)
+		-->nur eine Files-Angabe nötig
+		
+		
+	aktivieren des AccessFiles durch "AllowOverride"
+	
+	AllowOverride Wert1 Wert2 WertN
+		-all		-->alles aktivieren(Manual)
+		-none		-->de-aktivieren (Standart)
+		-AuthConfig	-->Authentifizierung, Zugriffsteuerung erlauben
+						-AuthName, AuthType, AuthUserfile,...
+						Require ip|user|group|... Require All, RequireAny, RequireNone
+						
+		-FileInfo	-->Datei-spezifische Direktiven
+							(siehe httpd-autoindex.conf)
+						IndexOprions, HeaderName, ReadmeName,
+						IndexIgnore, AddIcon, AddDescription,...
+						ErrorDocument,...
+		
+		-Options	-->Erlaubt ändern der Options-Angaben
+						nur spezifische Optionen erlaubt
+							Options=Angabe1,Angabe2,AngabeN
+							Options=Indexes,FollowSymLinks
+							
+	Ab Version 2.4
+		NonFatal=Wert
+			-all 		fehlerhadte Angaben ignorieren (enthält alle folgenden)
+			-override 	ignoriert nicht freigeschaltete Direktiven
+			-unknown	ignoriert "Tippfehler"
+			
+		
+	AllowOverrideList	Direktive1 Direktive2 DirektiveN
+						nur die angegebenen Direktiven werden erlaubt
+						Standart=none
+						
+	Problematik:
+	---------------------
+	-benötigt Ressourcen am Server
+	-zugriff auf Server wird langsamer
+	-tatsächliche Zugriff ergibt sich aus
+		dem geerbten Zugriffen weiterer Accessfiles
+		im Übergeorneten Verzeichnissen+ dem AccessFile
+		im aktuellen Verzeichnis
+	-Kenntnisstand der user, die Accessfiles erstellen/ändern
+	
+	Empfehlung:
+	----------------------
+	AllowOverride bzw. AllowOverrideList
+	niemals im DocumentRoot mit Angaben außer "none" versehen
+		
+		
+		
+		
+		
+		

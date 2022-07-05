@@ -1,0 +1,201 @@
+Befehle
+========
+
+- mkdir: legt Verzeichnisse an
+		Schalter:
+			-p (parent): legt Verzeichnisast an  Bsp:  mkdir -p v1/v2/v3
+ 
+- rmdir (remove directory): löscht ein leeres Verzeichnis
+	!Verzeichnis MUSS leer sein, und darf nicht das aktuelle Verzeichnis sein.
+	Programme die in dem zu löschenden Verzeichnis gestartet wurden verhindern das löschen
+	Schalter:
+		-p (parent): ganzen Verzeichnis-Ast löschen, wenn die Verzeichnisse keine Datei enthält
+		
+- cp (copy):  kopiert files
+		Syntax: cp [optionen] quelle ziel
+		Erklärung:
+				- 'quelle' kann aus mehren files bestehen, dann MUSS das Ziel ein Verzeichnis sein
+				- besteht 'quelle' aus einer Datei, kann das Ziel ein Verzeichnis sein
+				und/oder die copierte Datei umbenannt 
+				- auf das zu kopierende file muss der user min. Leserechte haben
+				- der User übernimmt nach dem kopieren die Rechte über das file
+				
+		Schalter: 
+			-i (interactive): 	Sicherheitsabfrage, ob bereits existierende Datei
+							gleichen Namens überschrieben werden soll
+			-R,r (recursive):	Verzeichnise mit ihrem Inhalt kopieren
+			-f (force): 		erzwingt -falls möglich-  die Kopieraktion, wenn man besitzer der datei ist
+			-p (preserve): 		beibehalten des Zeitstempels, der Rechte, des Besitzers und der Gruppe 
+							--> 'normale' user können das nur für eigene Dateien machen
+			-d (de-reference)	de-referenziert beim kopieren die das Quell-file
+							z.B. kopiert symbol. Link als Link
+			-v (verbose): 		zeigt an was gemacht wird
+			-a (all)			entspricht -pdR
+			
+-mv (move): benennt Dateien um oder verschiebt diese
+		Schalter:
+			-f (force): 	erzwingt -falls möglich- die Aktion
+			-i (interactive)	Sicherheitsabfrage, ob z.B. bereits existierende Datei überschrieben wird
+			
+-rm (remove):	löscht files
+	Syntax: rm datei [datei2]
+	standartgemäß löscht rm nur Dateien
+	zum löschen von Verzeichnissen wird ein Schalter benötigt 
+	
+	Schalter:
+		-r (recursiv):	löscht Verzeichnis samt Inhalt (auch dot Dateien)
+		-f (force): 	erzwingt löschen
+		-i (interactiv)	Sicherheitsabfrage, ob wirklich gelöscht werden soll
+		-v (verbose) 	zeigt an, was gemacht wird
+		
+		!! Vorsicht mit der Schalter-Kombination "-rf", da OHNE Abfrage das Löschen
+		rekursiv (Verzeichnisse samt Inhalt) erzwungen durchgeführt wird 
+		
+-grep (global regular expression print)
+	
+	Sucht nach Zeichenketten in einer Text-Datei (zeilenweise)
+	Syntax: grep [Schalter] Zeichenkette file1 [file2]
+	
+	Schalter:
+		-i (ignore case)	nicht zwischen groß/kleinschreibung unterschieden
+		-v (invert)		alle Zeilen, die Zeichenkette nicht enthalten
+		-n (number)		inkl. Zeilennummer am Anfang der Ausgabe
+		-l (list)			gibt nur den Dateinamen aus
+		-s (silent)			unterdrückt Fehler-/Warnmeldungen
+		-E (regular expression)
+		
+	Expressions:
+		^ 	Zeilenanfang beginnend
+		$	Zeilenende
+	
+		
+Textdateien anzeigen lassen
+
+- cat (concatenate) anzeigen bzw. Verknüpfen von Textdateien
+		
+	Syntax: cat [Schalter] file1 [file2]		#anzeigen
+	Syntax: cat [Schalter] file1 [file2] > datei	#Ausgabe umlenken
+
+	Bsp.: cat /etc/hostname /etc/hosts	
+	
+	Schalter:
+		-A (all): zeigt "nicht" darstellbare Zeichen
+
+- more
+	Syntax: more file1 [file2]
+	Bedingung (Unix-Standard): 	Leertaste	? eine Seite nach unten
+						Enter-Taste	? eine Zeile nach unten
+						q 		? beenden
+
+- less: blättern in Textdatei
+		Syntax: less file1 [file2]
+		Bedienung: Bild rauf/runter		? Seiten nach oben/unten
+				Cursur rauf/runter	? eine Zeile rauf/runter
+				G				? ans Ende
+				1G , 20G			? an Anfang, in Zeile 20
+				
+
+
+
+- head: zeigt die ersten Zeilen einer Textdatei
+	Syntax: head [Schalter] file1 [file2]
+	Schalter:
+		S
+		
+		
+		
+		
+- find: suchen nach file
+	Syntax: find [Verzeichnis] [Schalter]
+		
+	Schalter:
+		-name file:	sucht nach "filenamen"
+					Vorsicht bei Wildcards, müssen maskiert werden
+		
+		-type typ		sucht nach file-Typ
+					Typen: 	d	--> (directory) Verzeichnis
+							l	--> (symbolic link) SymLink
+							b	--> (block special file) device file
+							c	--> (character special file) device file
+							s	--> (socket) Kommunikations-Schnittstelle
+							f	--> (file) normale Datei
+		
+		-links zahl	sucht nach Referenzzähler nach "zahl"
+					(findet Hardlinks)
+						zahl		--> genau "zahl" Referenzzähler
+						+zahl	--> Referenzzähler größer zahl
+						-zahl		--> Referenzzähler kleiner zahl
+					zum Suchen nach Hardlinks "typ -f" hinzufügen
+					
+		- inum zahl	sucht nach inode (Knoten-Nummer) "zahl"
+					
+		- atime	(access) letzte Zugriff auf das file vor "zahl" Tagen
+		- mtime	(modify) letzte Änderung vor "zahl" Tagen
+		- ctime	(change) letzte Änderung der Attribute vor "zahl" Tagen
+		  zah  -->		genau zahl * 24 Stunden
+		+zahl -->	 	älter als "zahl" * 24 Stunden
+		-zahl  -->		innerhalb der letzten "zahl" * 24 Stunden
+		
+		- amin	(access) letzte Zugriff auf das file vor "zahl" Minuten
+		- mmin	(modify) letzte Änderung vor "zahl" Minuten
+		- cmin	(change) letzte Änderung der Attribute vor "zahl" Minuten
+		 zah  -->		genau zahl * 60 Sekunden
+		+zahl -->	 	älter als "zahl" * 60 Sekunden
+		-zahl  -->		innerhalb der letzten "zahl" * 60 Sekunden
+		
+		-anewer file 	(access) letzter Zugriff neuer als Zeitstempel von "file"
+		-newer file 	letzte Änderung neuer als Zeitstempel von "file"
+		-cnewer file	(change) letzte Änderung der Attribute neuer als
+					Zeitstempel von "file"
+					
+		-user account		sucht nach Benutzernamen
+		-uid UID			sucht nach Benutzer mit User-ID
+		
+		-group gruppe		sucht nach Gruppenname
+		-gid GID			sucht nach Gruppe mit Id "GID"
+		
+		-perm recht 		(permission) sucht nach Zugriffsrechten
+						Angabe von "recht": absolut (oktal) oder 
+										relative (symbolic)
+			recht 	--> 		genau dieses Zugriffsrecht
+			-recht	-->		Mindestanforderung dieses Zugriffsrecht
+			/recht	-->		irgendeines der Zugriffsrechte
+		
+		-exec cmd	(execute) führt mit jeder einzelnen Fundstelle "cmd" aus 
+					! immer als letzten Schalter verwenden
+					Angabe des Kommandos:
+						-exec cmd {} \;		{}  -->	 Fundstelle
+											\;    --> 	beendet Kommando
+													im -exec MUSS ; maskiert werden
+					Verwendung von -exec; bei einer sehr großen Anzahl
+					an Fundstellen (um sicherzustellen, dass maximale
+					Kommandozeilenlänge bzw. Verarbeitungslänge der
+					Parameter durch das Kommando nicht überschritten wird)
+					! u.U. sehr zeitaufwendig, dafür aber genaue ausführung
+					
+					
+-kill, killall: manipulieren laufender Prozesse
+	Syntax: 	kill 	[signal] PID1 [PID2]
+			killall  [signal] programm_name1 [programm_name2]
+				!! nimmt ALLE Prozesse die diesen Namen haben
+				
+	nur eigene Prozesse können manipuliert werden (gilt nicht für Superuser)
+	
+	!! Vorsicht als Superuser mit killall !!!!
+	
+	Signale: (kill -l)
+		zahl		Name			Bedeutung
+		-15		TERM, SIGTERM	(terminate) herunterfahren des Prozesses (korrekt beendet)
+								kann vom Prozess abgewiesen werden
+								Standart-Signal
+		-9		KILL, SIGKILL		Prozess zwingend beenden,
+								kann nicht abgewiesen werden
+		-1		HUP, SIGHUP		(hang up) reinitialisieren des Prozesses
+									vorallem bei Server-Prozessen um Konfig
+									erneut einzulesen
+		-2		INT, SIGINT		(interrupt) unterbrechung über Tastatur
+		
+		-19		STOP,SIGSTOP		(stop) hält den Prozess an
+		-18		CONT,SIGCONT	(continue) setzt angehaltenen Prozess fort
+		 
+	

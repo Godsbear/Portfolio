@@ -1,0 +1,20 @@
+#! /bin/bash
+
+#SymLink auf Logfiles vhosts
+#
+cd /var/log/httpd/
+for verz in /srv/apache/share/vhosts/* 
+
+do
+	cd $verz/logs/
+	for verz2 in *
+	do
+		cd $verz2
+		pfad=`pwd`
+		cd ..
+		ln -s $pfad ./"$verz.$verz2"
+	done
+done
+
+
+

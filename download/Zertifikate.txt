@@ -1,0 +1,21 @@
+Zertifikat
+==========
+
+Zertifikat	-->	Zertifizierungs Stelle
+			CSR				|		CA		RootCA(höchste Stelle)
+		Certificate			|
+		Signing				|
+		Request				v
+						signiert
+						
+http5		<--			=> signiertes Zertifikat
+
+
+						Zertifikatskette
+						----------------
+						CRL		certificate
+								revocation
+								list
+						
+						
+						

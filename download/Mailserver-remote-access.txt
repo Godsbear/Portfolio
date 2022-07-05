@@ -1,0 +1,74 @@
+remote access
+=============
+/etc/ssh
+
+SSH secure shell
+	SSH-Server bereitstellen am übergeordneten 
+		System (Bank-Mailserver)
+		
+	remote access erfolgt vom untergeordneten
+		System (local PC)
+		
+		ssh User@IP/FQDN
+		
+		beimm 1. Mal  --> Fingerprint des SSH-Servers
+							bestätigen, dass man sich
+							verbinden will
+	
+	Public und Private-Keys
+	werden automatisch generiert beim start des ssh-Servers
+	werden die Keys gelöscht, bekommt man eine Meldung,
+	dass der Fingerprint nicht mehr der gleiche ist und warnt vor einem Man-in-the-middel-Attack
+	
+	
+	!!Achtung!! Tabtaste funktioniert nur auf dem localem-System
+	
+		kopiert locale Datei auf Remote-System	
+			scp "datei" IP:/Verzeichnes 		(ohne ssh verbindung)
+		
+		kopiert Dateien vom Remote-System auf das locale System
+			scp IP:/Verzeichnis/Datei .		(ohne ssh verbindung)
+		
+		
+			
+	Beispiel:
+		locales System als gorgel
+			$whoami
+				-->gorgel
+		docu vom webspace kopieren auf remote-System 192.168.84.2
+			scp doku.pdf root@192.168.84.2:/srv/http/htdocs		(ohne ssh verbindung)
+				#account_des_remote_hosts@192.168.84.2:/srv/http/htdocs 	(passwort wird benötigt)
+		
+	Verbindungen auf SSH nachschauen mit: last oder journalctl 	
+	
+	
+	
+	Verbindung mit Bank-Mail-Server
+	--------------------------------------------------
+	IPs der Bank-Mailserver
+		10.212.5N.0/16		--> 10.212.51.0/16	(pw:tunix)
+		
+	/HOME/mail/postfix/main.cf
+		myhostname = mailer.$mydomain
+		mydomain = reihe1.fi212.netz
+		myorigin = $mydomain
+		inet_interfaces = $myhostname, localhost
+		mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
+		mynetworks = 10.212.0.0/16, 127.0.0.0/8
+		alias_maps = hash:/etc/postfix/aliases
+		mail_spool_directory = /var/spool/mail
+		
+		#debugger_command =
+		#	 PATH=/bin:/usr/bin:/usr/local/bin:/usr/X11R6/bin
+		#	 ddd $daemon_directory/$process_name $process_id & sleep 5
+		
+	/HOME/mail/postfix/aliases
+		root:	gorgel
+	
+	
+	myhostname = mailer.$mydomain
+	mydomoain = reihe1.fi212.netz
+	myorigin = $mydomain
+	inet_interfaces = $myhostname,localhost
+	
+	

@@ -1,0 +1,51 @@
+FTP-Konfiguration
+==================
+
+Kommando		Test/Prüfen
+#Gruppe erstellen mit -g <groupID> <GruppenName>
+groupadd -g 50100 ftp50100
+				tail -5 /etc/group
+			
+				grep apache /etc/group
+				
+#apache der Gruppe hinzufügen
+usermod -a -G ftp50100 apache			(Gruppe zusätzlich hinzufügen mit -a)
+				grep apache /etc/group
+				
+#User erstellen mit -userID -gruppenID -d (HOME-Verzeichnis /srv/apache/share/vhosts_remote/)
+# -s (shell) <userName>
+useradd -u 50101 -g ftp50100 -d /srv/apache/share/vhosts_remote/50101_nur.bade.wanne/./public 
+		-s /sbin/nologin ftp50101
+
+#Verzeichnis erstellen
+mkdir -p /srv/apache/share/vhosts_remote/50101_nur.bade.wanne/public				
+				
+cd 	/srv/apache/share/vhosts_remote/50101_nur.bade.wanne/
+
+mkdir logs
+
+chown ftp50101:ftp50100 public/
+
+chmod 750 public/
+
+cd /srv/apache/share/vhosts_remote/
+
+chmod 550 50101_nur.bade.wanne/
+chgrp ftp50100 50101_nur.bade.wanne/
+
+cd srv/apache/share/
+chmod 555 vhosts_remote/
+
+chmod 555 share/
+chown 0:0 share/
+
+chmod 555 apache/
+
+#änderung der shell auf eine gültige
+usermod -s /bin/bash ftp50101
+
+
+
+
+
+

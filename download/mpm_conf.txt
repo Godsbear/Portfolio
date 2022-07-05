@@ -1,0 +1,54 @@
+MPM.conf
+===========
+MPMs:	prefork	-> Version 0.9
+		worker	-> Version 2.0
+		event	-> Version 2.0 (Experiementel)
+				   Version 2.2 working (standart)
+		
+Prefork:	
+	Hauptprozess	-> Port 80 (root)
+		|
+		|--Sub-Prozess1		----|
+		|--SP2					|
+		|--SP3					|apache:apache
+		|--SP4					|
+		|--SP5				----|
+		
+		
+	StartServers		--> zu startender Subprozess
+	MinSpareServers		--> Mindest-Anzahl freier Subprozesse
+	MaxSpareServer		--> Maximal-Anzahl freier Prozesse
+	MaxRequestWorkers	--> Maximal-Anzahl simultaner Verbindung
+	MaxConnectionPerChild	--> Maximal-Anzahl von Verbindungen zu Serverprozessen
+	
+	
+	Worker:		Thread
+	Hauptprozess	-> Port 80(root)
+		|
+		|--Sub-Prozess1		----|
+		|	-1.Thead = Listen
+		|	-25 Threads			|
+		|--SP2					|
+		|	-25 Threads			|
+		|--SP3					|apache:apache
+		|	-25 Threads			|
+		|--SP4					|
+		|	-25 Threads			|
+		|--SP5				----|
+		|	-25 Threads			|
+	
+	
+	StartServers		--> zu startender Subprozess
+	MinSpareTreads		--> Mindest-Anzahl freier Treads
+	MaxSpareServer		--> Maximal-Anzahl freier Prozesse
+	MaxRequestWorkers	--> Maximal-Anzahl simultaner Verbindung
+	MaxConnectionPerChild	--> Maximal-Anzahl von Verbindungen zu Serverprozessen
+	ThreadsPerChild		--> Threads pro Subprozess
+	
+	
+	
+	
+	
+	
+	
+	

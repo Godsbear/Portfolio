@@ -1,0 +1,24 @@
+Mail-Struktur
+==============
+
+		
+	BankreiheN:
+		Bank-Mailserver	
+		SMTP	-->	postfix
+		SMTP	-->	postfix
+		POP3	--> tpop3d
+
+		
+		
+	Sitzplätze BankreiheN:			
+		Localer Mailserver				
+		SMTP	-->	postfix				
+		POP3	--> tpop3d		
+		
+	Localer Mailclient
+		Mail
+		fetchmail	--> ruft vom übergeordneten Mail-server (POP3) alle 15min Emails ab
+						und leitet sie an einen localen SMTP-Server weiter
+		SMTP		-->leitet Emails weiter an localen POP3
+		POP3		-->legt Mails ins Postfach
+		Postfächer

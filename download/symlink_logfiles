@@ -1,0 +1,41 @@
+#! /bin/bash
+
+#SymLink auf Logfiles vhosts
+#
+
+for verz in /srv/apache/share/vhosts/* 
+
+do
+	if [ ! -d  $verz/logs/ ] ; then
+		cd $verz
+		mkdir -p -m550 logs/{access,error}
+		echo "Verzeichnis logs/access und logs/error mit 550 angelegt"
+	fi
+	if [ ! -d $verz/logs/access ] ;then
+		cd $verz/logs
+		mkdir -m550 access
+		echo "Verzeichnis logs/access mit 550 angelegt"
+		
+	fi
+	if [ ! -d $verz/logs/error ] ;then
+		cd $verz/logs
+		mkdir -m550 error
+		echo "Verzeichnis logs/error mit 550 angelegt"
+	fi
+	
+	name=`basename $verz`
+	cd $verz/logs/
+	
+	for verz2 in *
+	do
+		cd $verz2
+		pfad=`pwd`
+		echo "SymLink von $pfad"
+		echo -e "nach /var/log/httpd/$name.$verz2\n"
+		cd ..
+		ln -s $pfad /var/log/httpd/"$name_$verz2"
+	done
+done
+
+
+

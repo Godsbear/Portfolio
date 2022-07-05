@@ -1,0 +1,65 @@
+/user/local/apache2/
+	|
+	|-bin		------|
+	|-sbin			  |
+	|-etc			  |root:root
+	|	|-extra		  |
+	|-var		------|
+	|
+	|share		------|
+		|-icons		  |
+		|-error		  |apache:apache
+		|-vhosts	  |
+			|-html----|
+			
+			
+			
+Umbau Apache --> Webspaces öffentliche Daten
+
+Überlegung:
+
+	|
+	|-bin	----------|
+	|-sbin			  |
+	|-etc			  |root:root
+	|	|-extra		  |
+	|-var	----------|
+	|
+	|share		--------------------|
+		|-icons		  				|
+		|-error		  				|apache:apache
+		|-vhosts	  				|
+			|-FQDN	  				|
+			|	|-htdocs (DocRoot)	|
+			|	|logs				|
+			|	|-...				|
+			|-...					|
+			|-...	----------------|
+				
+	- usätzliche Verzeichnisebene für remote-user
+		-> Zugriff auf Logfiles
+	- Zugriffsrechte, Besitzer/Gruppe
+	- Apache-konfiguration an eigene Bedürfnisse anpassen
+		-> Backup von .conf Dateien
+		-> Kommentare entfernen
+	- Vorlagen für vhosts bzw. konfiguration erstellen
+	
+	typische Verzeichnisse:
+		/srv/apache					oder	/srv/apache
+			|									|
+			|-share								|-icons
+				|icons							|-error
+				|-error							|-vhosts
+				|-vhosts							|-...
+					|-...
+					
+	
+	
+					
+			
+			
+			
+			
+			
+			
+			

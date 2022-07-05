@@ -1,0 +1,156 @@
+Mail (SMTP + POP3/IMAP)
+=======================
+
+SMTP (simple mail transfer protocol)
+Server Port: 25
+	-->versenden von Mails
+
+Software: 	sendmail			--> unsicher und nicht performant
+			qmail	(Bernstein)	--> ungewohnte Verzeichnisstruktur, keine Anpassungen
+			postfix	(Venema)	-->	ähnlich wie sendmail, sicherer und hoch Performant
+									Fliesband bearbeitung: nimmt entgegen und legt sie im Verzeichnis ab
+									verarbeitet wird mit einem "unterprivilegiert" user
+									-->www.postfix.org
+									
+Postfix
+-----------------
+
+modularer Aufbau/Bearbeitung
+	-->sicher, performant
+
+einfache konfiguration
+
+Verzeichnis-Aufbau:
+	
+	/usr/sbin/ 			-->Postfix-Systembinaries
+						-->Daemon für SMTP
+						
+	/usr/bin/			-->Verwaltungstools
+	
+	/usr/lib/postfix/bin	-->Binaries zur Verarbeitung von Mails
+	
+	/var/spool/postfix	-->HOME-Verzeichnis
+									
+	/var/spool/mail		-->Postfach-Verzeichnis
+	/var/mail/
+						Postfach-Formate:
+						-----------------
+							mbox (mailbox)		--> EINE Datei(Text-Datei), Emails werden an Datei angehangen
+													Darstellung im Klartext
+													
+							maildir				-->Verzeichnis in dem Mails in einer eigenen Datei
+													gesspeichert sind
+													
+													
+	/etc/postfix/		-->Postfix-Konfigurations-Verzeichnis
+							main.cf Haupt-Konfigdatei
+							
+						
+	Syntax der Konfigurationsdateien
+	---------------------------------
+	Auf einrücken achten !!!
+	|direktive1(Variable) = Wert
+	|direktive2 = Wert1, Wert2, WertN
+	|direktive3 = Wert1, Wert2,
+	|			Wert3, WertN
+	|
+	|
+	
+	Direktiven sind Variablen
+		FQDN des SMTP setzen: mailer.com.tld
+		mydomain = dom.tld
+		myhostname = mailer.dom.tld
+		oder besser:
+		
+		mydomain = dom.tld					-->Domain des SMTP-Server
+		myhostname = mailer.$mydomain		-->FQDN des SMTP-Server
+		myorigin = $myhostname				-->Ursprung des SMTP-Server
+											$myhostname -->Mail...@FQDN_des_SMTP-Server
+											$mydomain	-->Mail...@Domain-des_SMTP-Servers
+	
+		inet_interfaces = $myhostname, localhost	-->an welcher IP Emails entgegen genommen werden									
+													!!Wichtig Namensauflösung
+													
+		mydestination						-->Zuständigkeit des SMTP-Servers											
+		mydestination = $myhostname, localhost.$mydomain, localhost
+		
+		mynetworks = 10.212.0.0/16, 127.0.0./8	-->wer(IP /IP-Bereich) über SMTP-Server
+													Mails versenden darf
+									
+		alias_maps = hash:/etc/postfix/aliases	-->Absoluter Pfad für die Textdatei, die Aliase enthält
+													
+		alias_database = $alias_maps		-->Db-Datei der Aliase. die vom Postfix benutzt wird										
+													hash:	Hash-Format
+												Hat Automatisch die Extension .db 
+												mit Kommando newaliases wird Textdatei
+												in DB-Datei konvertiert
+													
+		mail_spool_directory = /var/spool/mail	-->
+		
+		
+	#root auf gorgel umlenken	
+	/etc/postfix/aliases
+	root:		gorgel
+	
+	Mails versenden:
+		Mail connect:
+			telnet 10.212.51.2 25
+		Mail adressieren:
+			EHLO iris.fi212.netz
+		Mail Sender:
+			MAIL FROM: ich@hier
+		Mail Empfänger:
+			RCPT TO: gorgel@N.fi212.netz
+		Mail Data (Inhalt)
+			DATA
+		Mail beenden
+			QUIT
+	
+	
+			
+			
+	Kommunikation mail:
+	
+	User: gorgel.dom.tld						Provider:
+	Mail-Client:								Domain: dom.tld
+	Post-Eingangserver
+	Post-Ausgangserver (SMTP)
+		
+	
+	Email:
+		Sender: gorgel@dom.tld
+		Empfänger: xyz@firma.de		
+			-->Email wird an Post-Ausgangsserver geleitet
+			-->Post-Ausgangsserver versendet Email an Provider SMTP-Server
+			-->Provider SMTP-Server prüft, ob er zuständig ist
+			-->da firma.de nicht der Provider ist, frägt er einen DNS-Server 
+				erst .de --> wird dann auf firma.de weitergeleitet
+			-->SMTP-Server von firma.de  --> firma.de IN MX 10 mailer.firma.de
+				-->mailer.firma.de IN A 123.123.125
+			-->Provider SMTP-Server sendet Email an Provider: firma.de
+				an den SMTP-Server mailer.firma.de
+				-->SMTP-Server firma.de prüft ob er für die Email zuständig ist
+				-->Wenn zuständig leitet der SMTP-Server mit MDA (mail delivery agent) z.B.procmail
+					die Email an einen Post-Eingangsserver z.B. POP3 weiter, dieser legt
+					die Email in das zugehöhriges Postfach (xyz@firma.de)
+					
+	User: xyz@firma.de
+	Mail-Client:								Provider:
+	Post-Eingangserver	(POP3:pop3.firma.de)	Domain:firma.de
+	Post-Ausgangserver 	(SMTP)
+	
+					
+	MUA: mail user agent:
+		z.B. Outlook, THunderbird,...
+					
+	
+		
+		
+		
+		
+		
+		
+		
+		
+				
+													

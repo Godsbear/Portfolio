@@ -1,0 +1,142 @@
+#185 FTP
+======================
+
+FTP-Server-Port: 21
+Betriebsmodi:
+	-active mode
+											FTP-Server				FTP-Client
+		Port:21								10.99.0.15				192.168.84.42
+		-> nur für kommandos				source socket <--------	source socket
+		Port:20								10.99.0.15.21			192.168.84.42:9876
+		-> Datum verschicken				destination socket		destination socket
+											192.168.84.42:9876		10.99.0.15:21
+		meist nicht mehr verwendet, da
+		Kommunikations-Aufbau des Servers
+		über Port 20 von Firewalls bzw.Proxy
+		geblockt wird.
+	
+	-passive mode
+		Port:21		--> Kommandos+Daten
+		
+FTP-Server Einsatzbereiche:
+	Download von Software		<--anonymous-Zugriff
+	ISP für "kostengünstige" gemietete
+	Webspaces					<-- real-existierende Benutzer
+	
+	Provider -->sicheres FTP
+	
+FTP arbeitet unverschlüsselt
+
+abgesichert als
+	SFTP (secure FTP) i.d.R. über SSH
+	FTP+TLS (transport Layer security)
+	
+	
+Nutzungsmodi/Zugriffsmodi:
+	anonymous-Zugriff
+		öffentlicher Bereich, auf den jeder lesenden
+		Zugriff erhält
+	
+		Öffentliche FTP-Server
+		Account: anonymous
+				u.U. auch ftp
+		Password: abhängig von FTP-Server-konfiguration
+				@, x@y, x@y.z, anonymous@example.com
+				oder nur "Enter-Taste"
+				
+				
+Verzeichnisaufbau aus Sicht des 
+	anonymous-Users
+	/
+	|						pub = Download-Bereich
+	|--pub/					public Verzeichnisse:
+	|	|							r-x r-x r-x
+	|	|--software/					root:root
+	|	|		|			oder root:ftp
+		|--dokument/		auf Dateien:
+		|		|					r-x r-x r-x
+		|					Besitzer/Gruppen: siehe oben
+		|
+		|--ls-lR	--> ls -lR umlenken in Datei ls-lR
+						= ls -lR > ls-lR
+							u.U. ls-lR.gz
+		|--ls-ltR	-->	ls -ltR > ls-ltR
+						sortiert nach Änderungsdatum
+						innerhalb des Verzeichnisses
+						
+		|--readme.1st-->mit Script erstellte Beschreibung
+	|						
+	|
+	|--incoming/		-->upload-Verzeichnis
+	|					!! kein Download für
+							anonymous-User
+							Verzeichnis:
+							-wx -wx -wx
+							besser:
+							-wx -wx -wt	(sticky-Bit +execute)
+							um Tauschbörse (warez) zu verhindern
+							
+						Hochgeladene Dateien durch anonymous-User
+							Beseitzer: ftp
+							Gruppe: ftp
+							Zugriffsrechte: rw- r-- r--
+		
+							
+	real-existierende Benutzer:
+		Benutzer mit Account am Betriebssystem
+		kann sich i.d.R. frei im Dateisystem bewegen
+		(abhängig von Zugriffsrechten)
+		
+		es besteht die Möglichkeit, diesen
+		Benutzer mittels chroot in einem
+		Verzeichnisbaum gefangen zu halten
+	
+	
+FTP-Server: pure-ftp
+	Konfiguration:
+		-Konfigurationsdatei
+			i.d.R. /etc/pure-ftpd.conf
+			
+		-über Schalter
+		
+	Starten/Beenden:
+		systemctl	start	pureftp
+		systemctl	stop	pureftp
+		überprüfen:
+		systemctl	status	pureftp
+		netstat	-ltn oder ss -ltn
+			--> 0.0.0.0:21 LISTEN
+		
+		Schalter:
+		-B			-->Background, läuft als daemon im Hintergrund)
+		-H			-->Falls kein DNS-Server vorhanden ist, schaut er in die Host-Datei
+		-D			-->Zeigt auch .* Dateien an
+		-c<zahl>	-->Anzahl Verbindung von Clients
+		-C<zahl>	-->Anzahl Verbindungen der gleichen IP
+		-fftp
+		-I<zahl>	-->Session ablauf in Minuten
+		-k<zahl>	-->Ab wann Uploads nicht mehr erlaubt sind zahl 
+						in%  vom Speicherplatz
+		-L<zahl>:<zahl2>	--> bei Textbasierten Systeme: 
+								Zeige maximal <zahl> Dateien an 
+								oder <zahl2> Verzeichnisse tief
+		-m<zahl>	-->Belastung des Systems, wenn die Belastung von <zahl> überschritten wird,
+						wird anonymous deaktiviert
+		-Oclf:/var/log/pure-ftp.log		--> gibt an wie und wo Protokoliert wird
+		-s 			-->Dateien von ftp kann nicht von anonymous heruntergeladen werden
+		-U<zahl>	-->UserMask Rechte von 777 abgezogen
+		-u<zahl>
+		-Z			-->Dau-Schalter Verhindert, dass User sich die Schreibrechte nimmt
+		-Y			--> Angabe wie Verschlüsselt werden soll
+							0 (keine Verschlüsselung), 
+							1 (was der Client will),
+							2 ( nur noch verschlüsselte Verbindung), 
+							3 (verschlüsselt auch den Kanal)
+		-E			-->Nur realexistierende User, kein anonymous
+		-e			-->Nur anonymous, keine realexistierende User
+	
+		
+		
+		
+		
+	

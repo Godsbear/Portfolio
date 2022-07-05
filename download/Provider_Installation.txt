@@ -1,0 +1,131 @@
+Provider-Installation (HTTP+FTP)
+================================
+
+Ausgangssituation:
+	HTTP:	Webspace	--> Apache: lesender Zugriff
+	
+	FTP:	FTP-User	--> für upload im Webspace
+							schreibender Zugriff
+							chroot: eine Ebene höher als Webspace
+							
+	Bsp:	|--FQDN				Besitzer: FTP-User, Gruppe: FTP-Gruppe, rwx r-x r-x
+				|
+				|--	Webspace	Apache:lesen, FTP-User: schreiben,	rwx r-x r-x
+				|		|
+				|		|--1.html	rw- rw- r--,	User ftp1, Gruppe: ftpgrp
+				|
+				|--	
+				|
+				|--	Log-Verzeichnis
+	
+				
+	Varianten:
+	
+	-	EIN FTP-User + FTP-Gruppe:
+			Besitzer: FTP-User
+			Gruppe: FTP-Gruppe
+			andere: ...Apache
+			Vorteil:
+				einfachste Umsetzung
+				--> Standart-umask (022)
+					rwx r-x r-x bzw. rw- r-x r--
+			Nachteil:
+				jeder hat lesenden Zugriff
+				
+				
+	-	EIN FTP-User + FTP-Gruppe + kein Zugriff für den Rest  (FTP-Wurzel-Verzeichnis: rwx r-x ---)
+			Apache-User wird Mitglied der FTP-Gruppe
+			--> erfordert Re-Initialisierung des Apache
+		
+			
+	-	Mehrere FTP-User
+			=>	mehrere unterschiedliche UIDs arbeiten (schreibend)
+				im selben Verzeichnissbaum
+				--> Gruppe: schreiben
+					=> Erstellungsmaske anpassen
+						FTP-Server-Konfiguration
+						002	--> rwx rwx r-x
+						113	-->	rw- rw- r--
+						=> Apache hat Zugriff über andere, NICHT Mitglied der FTP-Gruppe
+					
+				Nachteil: jeder hat Zugriff (lesen)
+				
+				
+	-	Mehrere FTP-User
+			=> allen FTP-User die selbe UID geben
+				kein Zugriff für andere 	(FTP-Wurzel-Verzeichnis: rwx r-x ---)
+				=> Apache wird Mitglied der FTP-Gruppe
+				
+				Nachteil: 	bei User-Fehlern nicht nachvollziegbar,wer Schuld ist
+							Alle haben die gleiche User-ID
+						
+									
+Betriebssystem-Seitige Konfiguration
+---------------------------------------
+
+	FTP-User + FTP-Gruppe anlegen
+	FTP-User: HOME-Verzeichnis
+				-->FQDN des Webservers (chroot)
+	Apache-User in FTP-Gruppe aufnehmen		
+				
+	Zugriffsrechte: Besitzer/Gruppe ab FTP-HOME-Verzeichnis
+	
+	
+	
+FTP-Server-Konfiguration
+---------------------------------------
+	
+	Testen: -login via FTP
+			-funktioniert chroot
+			-Verzeichnisse/Dateien erstellen und löschen
+			-Dot-Files sichtbar (AccessFilename-Datei (.htaccess))
+				
+				
+Apache-Server-Konfiguration
+----------------------------------------
+				
+	vhost konfigurieren
+	Testen: Webbrowser-Test
+	
+	Verzeichniss:
+	/srv/apache/			r-x r-x r-x root:root
+			|
+			|--	share		r-x r-x r-x root:root
+			|	|
+			|	|--vhost		r-x r-x --- apache:apache
+				|	|--FQDN
+				|	|--...
+				|
+				|--vhosts-remote	r-x r-x r-x root:root
+					|
+					|--GID_FQDN
+					|--...
+				
+				
+	FTP-User | FTP-Gruppe
+	
+		UID/GID ein Bereich definieren
+			5-Stellige UID: 5	--> FTP-User mit Webspace
+							0	--| Erste FTP-Gruppe
+							1	--|
+							N
+							N		laufende Nr. des Users
+							
+			5-Stellige GID: 5	--> FTP-User mit Webspace
+							0	--| Erste FTP-Gruppe
+							1	--|
+							0
+							0	--> mit 0 auffüllen
+							
+							
+		HOME-Verzeichnis:
+			FTP-seitig: chroot
+			
+			/srv/apache/share/vhosts-remote/FQDN/./htdocs
+							
+							
+							
+				
+				
+				
+				

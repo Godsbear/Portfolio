@@ -1,0 +1,42 @@
+Fetchmail
+============
+
+	>	zum Abholen von Mails an einem übergeordneten System
+		-->	POP3 oder IMAP
+	
+	>	holt in bestimmten intervallen Mails ab
+	
+	>	übergibt die abgehohlten Mails an localen SMTP-Server
+			(da dieser weiß, wo sich die Postfächer befinden)
+			
+	>	funktioniert auch ohne SMTP
+		-->	Postfächer müssen dann "von Hand" angeben werden
+	
+	> 	einrücken führt das Kommando weiter
+	
+	
+	Konfigurationsdatei:
+	--------------
+	Systemweit: /etc/fetchmailrc
+	Besitzer/Gruppe: fetchmail:root
+	Rechte:			r-- --- ---
+			oder	rw- --- ---
+			
+	Benutzer-bezogen: $HOME/.fetchmailrc
+	
+	Konfiguration:
+	--------------
+		poll <FQDN/IP_des_übergeordneten_Systems> with proto <Protokoll>
+				user <account> with password <password_im_klartext> is <local_user> here
+				
+		--> Beispiel:
+		poll mailer.reihe1.fi212.netz with proto pop3 user r1-2 with password mailnix is gorgel here
+		
+			--> mit "keep" am Ende werden die Emails am übergeordneten system nicht gelöscht
+			
+		set postmaster root
+		set logfile /var/log/fetchmail.log		--> logfile erstellen und chown auf fetchmail
+
+
+		
+		zum starten

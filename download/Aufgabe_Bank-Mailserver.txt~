@@ -1,0 +1,19 @@
+
+
+
+
+#gruppe erstellen für Bankreihe 1
+groupadd -g 8100 mailuser
+
+#user in Bankreihe 1 erstellen 
+useradd -u 8111 -g 8100 -d /home/users/iriwan -m -c "Iris Wanzenboeck Bank1" -s /bin/bash iriwan
+useradd -u 8112 -g 8100 -d /home/users/marpim -m -c "Mark Pimpl Bank1" -s /bin/bash marpim
+useradd -u 8113 -g 8100 -d /home/users/thomor -m -c "Thomas Morgenstern Bank1" -s /bin/bash thomor
+
+useradd -u 8121 -g 8100 -d /home/users/iw -m -c "Iris Wanzenboeck Bank1" -s /bin/bash iw
+useradd -u 8122 -g 8100 -d /home/users/mp -m -c "Mark Pimpl Bank1" -s /bin/bash mp
+useradd -u 8123 -g 8100 -d /home/users/tm -m -c "Thomas Morgenstern Bank1" -s /bin/bash tm
+
+#Alle "normalen" user, die nicht mehr benötigt werden gelöscht
+userdel r1-1 r1-2 r1-3
+rm -r -f /home/users/r1-1 /home/users/r1-1 /home/users/r1-1

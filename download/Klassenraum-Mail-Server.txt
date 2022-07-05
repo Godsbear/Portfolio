@@ -1,0 +1,90 @@
+Klassenraum Mail-Server
+=======================
+
+								----------------------------					
+										Klassenraum MS							
+									SMTP	postfix
+									POP3	tpop3d
+								----------------------------
+									
+							Fetchmail					Fetchmail	
+									
+			---------------------							------------------------
+					Bank-MS 9										Bank-MS 8
+				SMTP	postfix									SMTP	postfix
+				POP3	tpop3d									POP3	tpop3d
+			---------------------							------------------------
+			
+				Fetchmail											Fetchmail
+				
+		------------------------------					-----------------------------
+		User1	User2	User3	User4					User1	User2	User3	User4
+		SMTP	SMTP	SMTP	SMTP					SMTP	SMTP	SMTP	SMTP
+		POP3	POP3	POP3	POP3					POP3	POP3	POP3	POP3
+		------------------------------					-----------------------------
+	
+		
+		
+		Klassenraum MS main.cf:
+			myhostname = mailman.$mydomain
+			mydomain = u5.fi212
+			weiteres wie BankMailServer
+		
+		tpop3d.conf:
+			listen-address: 172.21.50.0:110(u5.fi212)
+		
+		Namensauflösung über DNS sicherstellen:
+			resolv.conf
+			
+		BankMailServer:
+			fetchmailrc:
+			poll mailman.u5.fi212 with proto pop3 user <User Klassen MS> with password... is <User Bank MS> here
+		
+		
+		Aliases für <userName> --> vorname.nachnamen
+			sender_canonical_maps = 
+		
+		Aliases für vorname.nachname --> <userName>
+			recipient_canonical_maps =
+
+			
+			
+		Klassenraum Mail-Server
+		--------------------------------
+		IP: 172.21.50.0
+		Password: isnix
+		
+		Checkliste:
+			main.cf
+			tpop3d.conf
+			resolf.conf
+			
+			-----------
+			2 user anlegen Klassen MS
+				vnN
+				v=1. Buchstabe Vorname
+				n=1. Buchstabe Nachname
+				N=	 Nummer der Bankreihe
+				
+				UID: 8Nmm (wie auf BMS)
+				GID: 8N00
+				
+				HOME: /home/mailuser/bankN/vnN
+				/shell/bash
+				
+				groupadd -g 8100 bank1
+				useradd -u 8102 -g 8100 -d /home/mailuser/bank1/mp1 -m -s /bin/bash mp1
+				useradd -u 8122 -g 8100 -d /home/mailuser/bank1/marpim1 -m -s /bin/bash marpim1
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+			
+			
+			
