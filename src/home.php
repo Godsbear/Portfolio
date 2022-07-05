@@ -63,9 +63,9 @@ session_start();
                 der Webentwicklung, da ich daran besonderes Interresse habe.<br><br>
                 Ich habe die Inhalte in zwei Teile aufgeteilt.<br>
                 Die nachfolgenden Links sind Themen die im Unterricht entstanden sind.<br>
-                Eine Documentation bzw. Codeschnipsel zu den Webseiten<br>
-                finden Sie im Reiter Docu-Webseiten.
+                Den Code können Sie bei GitHub anschauen mit dem Folgenden Link:
             </p>
+	    <span id="linkGitHub"><a href="https://github.com/Godsbear/Portfolio" target="_blank" rel="noopener noreferrer">Link zum Code auf Github</a></span>
         </div>
         <div class="page-content">
             <br>
