@@ -14,6 +14,7 @@ echo('
 				}
 echo('
 				<li ><a class="nav-link" href="/src/docu.php">Docu Mail-Server</a></li>
+				<li ><a class="nav-link" href="/src/docu_userpannel.php">Docu User-Verwaltung</a></li>
 				<li ><a class="nav-link" href="/src/docu_bank-mailserver.php">Docu Bankmail-Server</a></li>		
 		</nav>
 	</div>
