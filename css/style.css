@@ -608,3 +608,14 @@ th.file-name {
     background-color: #fff;
     width: 70%;
 }
+
+#linkGitHub {
+    font-size: 30px;
+    color: blue;
+}
+
+#linkGitHub:hover {
+    font-size: 30px;
+    color: blue;
+    text-decoration: underline;
+}
