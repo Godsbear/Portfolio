@@ -14,6 +14,26 @@ body {
     box-sizing: border-box;
 }
 
+
+/* Color dark- or lightmode*/
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background: gray;
+        color: white;
+    }
+    .nav-link {
+        color: yellow;
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    body {
+        background: lightgray;
+        color: black;
+    }
+}
+
 nav {
     height: 10%;
     background-color: black;
@@ -613,6 +633,7 @@ th.file-name {
     font-size: 25px;
     color: blue;
 }
+
 #linkGitHub a:link {
     font-size: 25px;
     color: blue;

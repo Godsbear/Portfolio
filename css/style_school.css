@@ -14,9 +14,48 @@ body {
     box-sizing: border-box;
 }
 
+
+/* Color dark- or lightmode*/
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background: gray;
+        color: white;
+    }
+    .nav-link {
+        color: yellow;
+    }
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+        font-weight: bold;
+        color: khaki
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    body {
+        background: lightgray;
+        color: black;
+    }
+    .nav-link {
+        color: blue;
+    }
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+        color: black;
+        font-weight: bold;
+    }
+}
+
 .download h2,
-h3,
-h4 {
+.download h3,
+.download h4 {
     color: blue;
 }
 

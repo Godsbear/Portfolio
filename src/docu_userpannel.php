@@ -44,14 +44,14 @@ HelperFunctions::cookiesCheck();
                 mit PATCH, die die User-ID und active = true/false enthält.<br>
                 Das löschen erfolgt durch eine Anfrage an den Server mit POST und der User-ID.
             </p>
-            <input class="zoom" type="image" src="/img/User_Verwaltung.PNG"  width="70%" onclick="imageZoom(this)">
+            <input class="zoom imageBtn" type="image" src="/img/User_Verwaltung.PNG" width="70%" >
             <br><br>
             <p class="conf">
                 Desweiteren wird ein PopUp erstellt womit man das Passwort der User<br>
                 zurücksetzten kann. Für das zurücksetzten wird der User per Dropdown-Menu<br>
                 ausgewählt  und das neue Passwort gesetzt.
             </p>
-            <input class="zoom" type="image" src="/img/Passwort_reset.PNG" width="70%" onclick="imageZoom(this)">
+            <input class="zoom imageBtn" type="image" src="/img/Passwort_reset.PNG" width="70%" >
         </div>
 	</div>
 </main>

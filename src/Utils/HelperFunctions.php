@@ -46,22 +46,13 @@ class HelperFunctions{
                 $cookies = json_decode($_COOKIE['cookies'],True);
             }
             //check if button submit
-            if(isset($_POST['zumLogin'])){
-                //logout
-                session_start();
-                session_destroy();
-                header('Location: ../index.php');
-            exit;
-            }
-        
-        //check if button submit
-        if(isset($_POST['submitbutton'])){
-            $submitbutton= $_POST['submitbutton'];
+        if(isset($_POST['akzeptieren'])){
+            $submitbutton= $_POST['akzeptieren'];
             if ($submitbutton){
                 //cookies set
-                $cookies = ['consent'=>0,'analytic' => 0];
+                $cookies = ['consent'=>0,'options' => 0];
                 $cookies_string = json_encode($cookies);
-                setcookie("cookies",$cookies_string,time() + (60*60*24*90));
+                setcookie("cookies",$cookies_string,time() + (5256000));
             }
         }    
     }
@@ -265,6 +256,64 @@ class HelperFunctions{
         }
    }
 
+
+   //Mails über SMTP-Server
+function mail_att($to,$subject,$message,$anhang)
+{
+$absender = "Mein Name";
+$absender_mail = "ich@domain";
+$reply = "antwort@adresse";
+
+$mime_boundary = "-----=" . md5(uniqid(mt_rand(), 1));
+
+$header  ="From:".$absender."<".$absender_mail.">\n";
+$header .= "Reply-To: ".$reply."\n";
+
+$header.= "MIME-Version: 1.0\r\n";
+$header.= "Content-Type: multipart/mixed;\r\n";
+$header.= " boundary=\"".$mime_boundary."\"\r\n";
+
+$content = "This is a multi-part message in MIME format.\r\n\r\n";
+$content.= "--".$mime_boundary."\r\n";
+$content.= "Content-Type: text/html charset=\"iso-8859-1\"\r\n";
+$content.= "Content-Transfer-Encoding: 8bit\r\n\r\n";
+$content.= $message."\r\n";
+
+//$anhang ist ein Mehrdimensionals Array
+//$anhang enthält mehrere Dateien
+if(is_array($anhang) AND is_array(current($anhang)))
+   {
+   foreach($anhang AS $dat)
+      {
+      $data = chunk_split(base64_encode($dat['data']));
+      $content.= "--".$mime_boundary."\r\n";
+      $content.= "Content-Disposition: attachment;\r\n";
+      $content.= "\tfilename=\"".$dat['name']."\";\r\n";
+      $content.= "Content-Length: .".$dat['size'].";\r\n";
+      $content.= "Content-Type: ".$dat['type']."; name=\"".$dat['name']."\"\r\n";
+      $content.= "Content-Transfer-Encoding: base64\r\n\r\n";
+      $content.= $data."\r\n";
+      }
+   $content .= "--".$mime_boundary."--"; 
+   }
+else //Nur 1 Datei als Anhang
+   {
+   $data = chunk_split(base64_encode($anhang['data']));
+   $content.= "--".$mime_boundary."\r\n";
+   $content.= "Content-Disposition: attachment;\r\n";
+   $content.= "\tfilename=\"".$anhang['name']."\";\r\n";
+   $content.= "Content-Length: .".$data['size'].";\r\n";
+   $content.= "Content-Type: ".$anhang['type']."; name=\"".$anhang['name']."\"\r\n";
+   $content.= "Content-Transfer-Encoding: base64\r\n\r\n";
+   $content.= $data."\r\n";
+   } 
+   
+ 
+
+
+if(@mail($to, $subject, $content, $header)) return true;
+else return false;
+}
     //end
 }
 ?>
